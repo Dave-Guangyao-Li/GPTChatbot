@@ -16,14 +16,25 @@ const chatbotConversation = document.getElementById('chatbot-conversation')
 document.addEventListener('submit', (e) => {
     e.preventDefault()
     const userInput = document.getElementById('user-input')
+    conversationArr.push({
+        role: "user",
+        content: userInput.value
+    })// Push an object holding the user's input to conversationArr.
     const newSpeechBubble = document.createElement('div')
     newSpeechBubble.classList.add('speech', 'speech-human')
     chatbotConversation.appendChild(newSpeechBubble)
     newSpeechBubble.textContent = userInput.value
     userInput.value = ''
-    // move dialogue to bottom of chatbot conversation ,so that it is always visible
-    chatbotConversation.scrollTop = chatbotConversation.scrollHeight
+    chatbotConversation.scrollTop = chatbotConversation.scrollHeight  // move dialogue to bottom of chatbot conversation ,so that it is always visible
 })
+
+async function fetchReply() {
+    const response = await openai.createChatCompletion({
+        model: "gpt-3.5-turbo",
+        messages: conversationArr
+    })
+    console.log(response)
+}
 
 // render a blinking cursor to indicate that the chatbot is typing, then render the chatbot's response. By repeatedly adding characters to the speech bubble element with a slight delay, the text appears as if it is being typed out, and the added 'blinking-cursor' class creates a blinking effect.
 function renderTypewriterText(text) {
