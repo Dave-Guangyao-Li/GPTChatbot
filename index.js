@@ -20,6 +20,7 @@ document.addEventListener('submit', (e) => {
         role: "user",
         content: userInput.value
     })// Push an object holding the user's input to conversationArr.
+    fetchReply()
     const newSpeechBubble = document.createElement('div')
     newSpeechBubble.classList.add('speech', 'speech-human')
     chatbotConversation.appendChild(newSpeechBubble)
@@ -33,7 +34,9 @@ async function fetchReply() {
         model: "gpt-3.5-turbo",
         messages: conversationArr
     })
-    console.log(response)
+    conversationArr.push(response.data.choices[0].message)
+    renderTypewriterText(response.data.choices[0].message.content)
+    console.log(conversationArr)
 }
 
 // render a blinking cursor to indicate that the chatbot is typing, then render the chatbot's response. By repeatedly adding characters to the speech bubble element with a slight delay, the text appears as if it is being typed out, and the added 'blinking-cursor' class creates a blinking effect.
