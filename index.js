@@ -6,6 +6,10 @@ const configuration = new Configuration({
 })
 
 const openai = new OpenAIApi(configuration)
+const conversationArr = [{
+    role: "system",
+    content: "You are a highly knowledgeable assistant that is always happy to help."
+}] // stores the conversation history
 
 const chatbotConversation = document.getElementById('chatbot-conversation')
 
