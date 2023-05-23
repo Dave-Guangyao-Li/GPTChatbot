@@ -1,0 +1,39 @@
+import { Configuration, OpenAIApi } from 'openai'
+import { process } from './env'
+
+const configuration = new Configuration({
+    apiKey: process.env.OPENAI_API_KEY,
+})
+
+const openai = new OpenAIApi(configuration)
+
+const chatbotConversation = document.getElementById('chatbot-conversation')
+
+document.addEventListener('submit', (e) => {
+    e.preventDefault()
+    const userInput = document.getElementById('user-input')
+    const newSpeechBubble = document.createElement('div')
+    newSpeechBubble.classList.add('speech', 'speech-human')
+    chatbotConversation.appendChild(newSpeechBubble)
+    newSpeechBubble.textContent = userInput.value
+    userInput.value = ''
+    // move dialogue to bottom of chatbot conversation ,so that it is always visible
+    chatbotConversation.scrollTop = chatbotConversation.scrollHeight
+})
+
+// render a blinking cursor to indicate that the chatbot is typing, then render the chatbot's response. By repeatedly adding characters to the speech bubble element with a slight delay, the text appears as if it is being typed out, and the added 'blinking-cursor' class creates a blinking effect.
+function renderTypewriterText(text) {
+    const newSpeechBubble = document.createElement('div')
+    newSpeechBubble.classList.add('speech', 'speech-ai', 'blinking-cursor')
+    chatbotConversation.appendChild(newSpeechBubble)
+    let i = 0
+    const interval = setInterval(() => {
+        newSpeechBubble.textContent += text.slice(i - 1, i)
+        if (text.length === i) {
+            clearInterval(interval)
+            newSpeechBubble.classList.remove('blinking-cursor')
+        }
+        i++
+        chatbotConversation.scrollTop = chatbotConversation.scrollHeight
+    }, 50)
+}
