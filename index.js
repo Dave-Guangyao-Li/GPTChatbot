@@ -1,11 +1,25 @@
 import { Configuration, OpenAIApi } from 'openai'
 import { process } from './env'
 
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref } from "firebase/database";
+
+
 const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
 })
-
 const openai = new OpenAIApi(configuration)
+
+
+const firebaseConfig = {
+    databaseURL: process.env.DATABASE_URL
+}
+const app = initializeApp(firebaseConfig) // initialize firebase app, with the database URL from env.js
+const database = getDatabase(app)
+const conversationInDb = ref(database) // reference to the database, which is a JSON object, ref() is a function that takes in a database URL and returns a reference to the database
+
+
+
 const conversationArr = [{
     role: "system",
     // content: "You are a highly knowledgeable assistant that is always happy to help."
@@ -45,17 +59,17 @@ async function fetchReply() {
 
 // render a blinking cursor to indicate that the chatbot is typing, then render the chatbot's response. By repeatedly adding characters to the speech bubble element with a slight delay, the text appears as if it is being typed out, and the added 'blinking-cursor' class creates a blinking effect.
 function renderTypewriterText(text) {
-    const newSpeechBubble = document.createElement('div')
+    const newSpeechBubble = document.createElement('div') // create a new speech bubble element, 
     newSpeechBubble.classList.add('speech', 'speech-ai', 'blinking-cursor')
-    chatbotConversation.appendChild(newSpeechBubble)
+    chatbotConversation.appendChild(newSpeechBubble) // add the speech bubble to the chatbot conversation, appendChild adds the element to the end of the parent element
     let i = 0
-    const interval = setInterval(() => {
+    const interval = setInterval(() => { // add characters to speech bubble with a slight delay between each character
         newSpeechBubble.textContent += text.slice(i - 1, i)
         if (text.length === i) {
-            clearInterval(interval)
-            newSpeechBubble.classList.remove('blinking-cursor')
+            clearInterval(interval) // stop adding characters to speech bubble when the end of the text is reached
+            newSpeechBubble.classList.remove('blinking-cursor') // remove blinking cursor
         }
-        i++
-        chatbotConversation.scrollTop = chatbotConversation.scrollHeight
+        i++ // increment i to add next character
+        chatbotConversation.scrollTop = chatbotConversation.scrollHeight // move dialogue to bottom of chatbot conversation ,so that it is always visible
     }, 50)
 }

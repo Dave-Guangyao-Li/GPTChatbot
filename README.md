@@ -3,6 +3,8 @@
 - use OpenAI createChatCompletion endpoint to generate response
 - customize presence_penalty,frequency_penalty model parameters
 - persisting the conversation using firebase database
+  - to persist the chat so that user can pick up where they left off
+  - to give user ability to reset the chat
 
 ## Notes
 
@@ -42,6 +44,11 @@
         ]
     )
     ```
+
+- persisting the conversation using firebase database
+  - to persist the chat so that user can pick up where they left off
+  - to give user ability to reset the chat
+  - create firebase project, create realtime database, create collection, create document, create fields, create rules
 
 # Quick start
 
