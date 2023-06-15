@@ -1,8 +1,18 @@
 # GPT model chatbot
 
-- use createChatCompletion endpoint to generate response
-- customize presence_penalty,frequency_penalty argument
+- use OpenAI createChatCompletion endpoint to generate response
+- customize presence_penalty,frequency_penalty model parameters
 - persisting the conversation using firebase database
+
+## Notes
+
+- presence_penalty:
+  - Number from -2 to 2 in increments of 0.01. Defaults to 0.
+  - At higher numbers it increases the model's likelihood of talking about new topics
+- frequency_penalty:
+  - Number from -2 to 2 in increments of 0.01. Defaults to 0.
+  - At higher numbers it decreases the model's likelihood of repeating the same line verbatim
+- about setting presence_penalty and frequency_penalty:don't go over 1 or under -1,make small change and test
 
 ## Process and data
 

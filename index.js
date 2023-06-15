@@ -8,8 +8,10 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration)
 const conversationArr = [{
     role: "system",
-    content: "You are a highly knowledgeable assistant that is always happy to help."
-}] // stores the conversation history
+    // content: "You are a highly knowledgeable assistant that is always happy to help."
+    // content:"You are an assistant that gives very short answers".
+    content: "You are a highly sarcastic assistant."
+}] // stores the conversation history, content can change chatbot's personality
 
 const chatbotConversation = document.getElementById('chatbot-conversation')
 
@@ -32,7 +34,9 @@ document.addEventListener('submit', (e) => {
 async function fetchReply() {
     const response = await openai.createChatCompletion({
         model: "gpt-3.5-turbo",
-        messages: conversationArr
+        messages: conversationArr,
+        presencePenalty: 0,
+        frequencyPenalty: 0.3,
     })
     conversationArr.push(response.data.choices[0].message)
     renderTypewriterText(response.data.choices[0].message.content)
