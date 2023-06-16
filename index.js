@@ -83,7 +83,7 @@ function fetchReply() {
         if (snapshot.exists()) {
             // console.log(Object.values(snapshot.val()))
             const conversationArr = Object.values(snapshot.val())
-            conversationArr.unshift(instructionObj)
+            conversationArr.unshift(instructionObj) // add instruction object to the beginning of the conversation array, so that the chatbot's personality is reset every time a new conversation is started
             const response = await openai.createChatCompletion({
                 model: 'gpt-3.5-turbo',
                 messages: conversationArr,
